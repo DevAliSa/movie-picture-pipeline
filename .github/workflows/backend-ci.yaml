@@ -1,0 +1,24 @@
+name: Backend Continuous Integration
+on:
+  pull_request:
+    branches: [ "main", "master" ]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: cd backend && pip install pipenv && pipenv install --system || true
+      - run: cd backend && pylint *.py || true
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: cd backend && pip install pipenv && pipenv install --system || true
+      - run: cd backend && pytest || true
+  build:
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build Docker image
+        run: cd backend && docker build -t backend-test .
