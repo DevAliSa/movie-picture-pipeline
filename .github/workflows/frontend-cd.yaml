@@ -32,4 +32,4 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
       - name: Deploy to EKS
         run: |
-          kubectl apply -f frontend/deployment.yaml -f frontend/service.yaml
+          kubectl apply -f frontend/k8s/deployment.yaml -f frontend/k8s/service.yaml
